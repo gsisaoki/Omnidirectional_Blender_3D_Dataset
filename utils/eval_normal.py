@@ -45,11 +45,11 @@ def compute_normal_metrics(total_normal_errors):
         'mean':   np.average(total_normal_errors),
         'median': np.median(total_normal_errors),
         'rmse':   np.sqrt(np.sum(total_normal_errors * total_normal_errors) / num_pixels),
-        'a5':     100.0 * (np.sum(total_normal_errors < 5) / num_pixels),
-        'a7.5':   100.0 * (np.sum(total_normal_errors < 7.5) / num_pixels),
-        'a11.25': 100.0 * (np.sum(total_normal_errors < 11.25) / num_pixels),
-        'a22.5':  100.0 * (np.sum(total_normal_errors < 22.5) / num_pixels),
-        'a30':    100.0 * (np.sum(total_normal_errors < 30) / num_pixels)
+        '@5':     100.0 * (np.sum(total_normal_errors < 5) / num_pixels),
+        '@7.5':   100.0 * (np.sum(total_normal_errors < 7.5) / num_pixels),
+        '@11.25': 100.0 * (np.sum(total_normal_errors < 11.25) / num_pixels),
+        '@22.5':  100.0 * (np.sum(total_normal_errors < 22.5) / num_pixels),
+        '@30':    100.0 * (np.sum(total_normal_errors < 30) / num_pixels)
     }
     return metrics
 
