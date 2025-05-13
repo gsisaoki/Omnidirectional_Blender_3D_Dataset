@@ -2,6 +2,45 @@ import numpy as np
 import Imath
 import OpenEXR
 
+def read_exr_depth(file_path, scale=100):
+    exr_file = OpenEXR.InputFile(file_path)
+    header = exr_file.header()
+    dw = header['dataWindow']
+    size = (dw.max.x - dw.min.x + 1, dw.max.y - dw.min.y + 1)
+        
+    pixel_type = header['channels']['B'].type # 型判別用の変数
+        
+    if pixel_type == Imath.PixelType(Imath.PixelType.FLOAT):
+        # FLOAT を使う場合
+        print("The EXR file is stored in FLOAT format.")
+        FLOAT = Imath.PixelType(Imath.PixelType.FLOAT) # archiviz-flat を使った実行用
+        try:
+            depth_str = exr_file.channel('V', FLOAT)
+        except:
+            try:
+                depth_str = exr_file.channel('B', FLOAT)
+            except:
+                try:
+                    depth_str = exr_file.channel('G', FLOAT)
+                except:
+                    try:
+                        depth_str = exr_file.channel('R', FLOAT)
+                    except:
+                        raise ValueError("No valid depth channel found in the EXR file.")
+        depth = np.frombuffer(depth_str, dtype=np.float32).reshape(size[1], size[0])
+    elif pixel_type == Imath.PixelType(Imath.PixelType.HALF):
+        # HALF を使う場合
+        # Read the depth channel as 16-bit floats
+        print("The EXR file is stored in HALF format.")
+        HALF = Imath.PixelType(Imath.PixelType.HALF)
+        depth_str = exr_file.channel('B', HALF)
+        # Convert the binary string to a numpy array
+        depth = np.frombuffer(depth_str, dtype=np.float16).reshape(size[1], size[0])
+    else:
+        print("The EXR file has an unsupported pixel type.")
+    depth = depth*scale
+    return depth
+
 def read_exr_depth_v2(file_path):
     exr_file = OpenEXR.InputFile(file_path)
     dw = exr_file.header()['dataWindow']
