@@ -1,13 +1,12 @@
-# Omnidirectional Blender 3D Dataset
+# Omnidirectional Blender 3D (OB3D) Dataset
 
 ## Overview
-This repository provides evaluation codes for [Omnidirectional Blender 3D Dataset (OB3D)](https://www.kaggle.com/datasets/shintacs/ob3d-dataset), a dataset designed for 3D reconstruction from multi-view equirectangular images.
-In addition to 3D reconstruction, OB3D also supports novel view synthesis and camera pose estimation for equirectangular images.
-This dataset consists of 12 scenes, each of which contains RGB images, depth maps, normal maps, camera parameters, and sparse 3D point clouds.
+This repository provides a set of codes for evaluating methods dedicated to tasks of equirectangular images using [Omnidirectional Blender 3D Dataset (OB3D)](https://www.kaggle.com/datasets/shintacs/ob3d-dataset).
+OB3D is designed for evaluating the accuracy of 3D reconstruction from multi-view equirectangular images and can also be used to evaluate the accuracy of novel view synthesis and camera pose estimation.
+OB3D consists of 12 scenes, each of which consists of RGB images, depth maps, normal maps, camera parameters, and sparse 3D point clouds.
 
-
-## Dataset Structure
-The dataset is organized as follows:
+## Dataset Structure of OB3D
+The dataset structure of OB3D is shown below.
 
 ```
 OB3D
@@ -30,7 +29,8 @@ OB3D
 |   |-- Non-Egocentric
 |       |-...
 ```
-OB3D can be downloaded from [OB3D](https://www.kaggle.com/datasets/shintacs/ob3d-dataset) where more detailed information about the OB3D is also provided.
+
+The data of OB3D is available at [OB3D](https://www.kaggle.com/datasets/shintacs/ob3d-dataset), where the detailed information is also provided.
 
 ## How to evaluate a reconstructed mesh
 To evaluate a reconstructed mesh using OB3D, it is required to reconstruct the mesh in the same coordinate system and scale as the ground truth, using the provided ground-truth camera parameters.
