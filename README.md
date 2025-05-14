@@ -12,20 +12,22 @@ The dataset is organized as follows:
 ```
 OB3D
 |-- archivis-flat
-|   |-- Non-Egocentric
+|   |-- Egocentric
 |       |--cameras
 |          |--00000_cam.json
-|          |--...
-|       |--images
-|          |--00000_rgb.png
 |          |--...
 |       |--depths
 |          |--00000_depth.exr
 |          |--...
+|       |--images
+|          |--00000_rgb.png
+|          |--...
 |       |--normals
 |          |--00000_normal.exr
 |          |--...
-|   |-- Egocentric
+|       |--sparse
+|          |--sparse.ply
+|   |-- Non-Egocentric
 |       |-...
 ```
 OB3D can be downloaded from [OB3D](https://www.kaggle.com/datasets/shintacs/ob3d-dataset) where more detailed information about the OB3D is also provided.
