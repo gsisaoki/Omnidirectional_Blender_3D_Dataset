@@ -2,3 +2,5 @@ NeurIPS_data-check
 notebooks
 **/__pycache__/**
 *.json
+eval_all.ipynb
+metrics

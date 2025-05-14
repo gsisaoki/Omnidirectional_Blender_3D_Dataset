@@ -8,8 +8,14 @@ def read_exr_depth(file_path, scale=1):
     header = exr_file.header()
     dw = header['dataWindow']
     size = (dw.max.x - dw.min.x + 1, dw.max.y - dw.min.y + 1)
-        
-    pixel_type = header['channels']['B'].type # 型判別用の変数
+    
+    try:
+        pixel_type = header['channels']['B'].type # 型判別用の変数
+    except:
+        try:
+            pixel_type = header['channels']['V'].type
+        except:
+            print("The EXR file does not contain a valid depth channel.")
         
     if pixel_type == Imath.PixelType(Imath.PixelType.FLOAT):
         # FLOAT を使う場合
@@ -34,7 +40,10 @@ def read_exr_depth(file_path, scale=1):
         # Read the depth channel as 16-bit floats
         # print("The EXR file is stored in HALF format.")
         HALF = Imath.PixelType(Imath.PixelType.HALF)
-        depth_str = exr_file.channel('B', HALF)
+        try:
+            depth_str = exr_file.channel('V', HALF)
+        except:
+            depth_str = exr_file.channel('B', HALF) 
         # Convert the binary string to a numpy array
         depth = np.frombuffer(depth_str, dtype=np.float16).reshape(size[1], size[0])
     else:
