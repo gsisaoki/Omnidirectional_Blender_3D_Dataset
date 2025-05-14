@@ -27,6 +27,8 @@ OB3D
 |          |--...
 |       |--sparse
 |          |--sparse.ply
+|       |--train.txt
+|       |--test.txt
 |   |-- Non-Egocentric
 |       |-...
 ```
@@ -125,3 +127,6 @@ python demo_files/generate_sampled_data.py \
 To evaluate a reconstructed mesh using our dataset, it is essential to reconstruct the mesh in the same coordinate system and scale as the ground truth, using the provided ground-truth camera parameters. 
 However, in some methods like SDF-based methods, it may be necessary to transform the scene into a normalized space—such as fitting it into a unit sphere—which alters the scale and coordinate system. 
 In such cases, we recommend saving the transformation parameters so that the mesh can be converted back to the original coordinate system and scale for evaluation.
+
+## Acknowledgement
+
