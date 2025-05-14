@@ -107,7 +107,9 @@ def calculate_metrics(est_depth, gt_depth, depth_max_value=None):
     if depth_max_value is not None:
         est_depth[est_depth > depth_max_value] = np.nan
         gt_depth[gt_depth > depth_max_value] = np.nan
-        
+    est_depth[est_depth == 0] = np.nan
+    gt_depth[gt_depth == 0] = np.nan
+    
     valid_mask = ~np.isnan(est_depth) & ~np.isnan(gt_depth)
     num_valid_pixels = np.sum(valid_mask)
 
