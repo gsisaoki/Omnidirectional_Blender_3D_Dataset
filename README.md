@@ -1,7 +1,7 @@
 # Omnidirectional Blender 3D Dataset
 
 ## Overview
-This repository provides some codes for [Omnidirectional Blender 3D Dataset (OB3D)](https://www.kaggle.com/datasets/shintacs/ob3d-dataset), a dataset designed for 3D reconstruction from multi-view equirectangular images.
+This repository provides evaluation codes for [Omnidirectional Blender 3D Dataset (OB3D)](https://www.kaggle.com/datasets/shintacs/ob3d-dataset), a dataset designed for 3D reconstruction from multi-view equirectangular images.
 In addition to 3D reconstruction, OB3D also supports novel view synthesis and camera pose estimation for equirectangular images.
 This dataset consists of 12 scenes, each of which contains RGB images, depth maps, normal maps, camera parameters, and sparse 3D point clouds.
 
@@ -35,9 +35,9 @@ OB3D can be downloaded from [OB3D](https://www.kaggle.com/datasets/shintacs/ob3d
 ## How to evaluate a reconstructed mesh
 To evaluate a reconstructed mesh using OB3D, it is required to reconstruct the mesh in the same coordinate system and scale as the ground truth, using the provided ground-truth camera parameters.
 
-Once the mesh is reconstructed in the same scale and coordinate system as the ground truth, our evaluation code can be used to quantitatively evaluate its qualit. 
+Once the mesh is reconstructed in the same scale and coordinate system as the ground truth, our evaluation code can be used to quantitatively evaluate its quality. 
 
-A minimal example of how to run the evaluation is shown below, , and a practical example can be found in `eval_demo.ipynb`.
+A minimal example of how to run the evaluation is shown below, and a practical example can be found in `eval_demo.ipynb`.
 
 ```python
 import numpy as np
@@ -67,7 +67,7 @@ We show an example usage of our dataset uging OmniSDF(CVPR2024) (support only qu
     ```
 2. Preparetion
     - Make the necessary modifications to the dataloader of your mehod so that it can load our dataset.
-    - In this case, we provide a modified version of the OmniSDF dataloader that supports our dataset. The dataloader is in ./demo_files/dataset_omniphoto.py
+    - In this case, we provide a modified version of the OmniSDF dataloader that supports our dataset. The dataloader is in `./demo_files/dataset_omniphoto.py`
 3. Make Config file
     <details> 
     <summary>./confs/demo.conf</summary>
@@ -101,11 +101,11 @@ We show an example usage of our dataset uging OmniSDF(CVPR2024) (support only qu
     </details>
 4. Train
     ```
-    CUDA_VISIBLE_DEVICES=1 python main.py --mode=train --conf="./confs/demo.conf"
+    python main.py --mode=train --conf="./confs/demo.conf"
     ```
 5. Extract Mesh
     ```
-    CUDA_VISIBLE_DEVICES=1 python main.py \
+    python main.py \
         --mode=validate_mesh \
         --conf="./confs/demo.conf" \
         --is_continue
