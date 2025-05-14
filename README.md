@@ -35,7 +35,7 @@ To evaluate a reconstructed mesh using OB3D, it is required to reconstruct the m
 
 Once the mesh is reconstructed in the same scale and coordinate system as the ground truth, our evaluation code can be used to quantitatively evaluate its qualit. 
 
-A minimal example of how to run the evaluation is shown below:
+A minimal example of how to run the evaluation is shown below, , and a practical example can be found in `eval_demo.ipynb`.
 
 ```python
 import numpy as np
@@ -83,7 +83,7 @@ We show an example usage of our dataset uging OmniSDF(CVPR2024) (support only qu
     is_continue = -1
     }
     dataset {
-    data_dir = /path/to/OmniBlender3D/scene/
+    data_dir = /path/to/OB3D/scene/
     fr_start = 0
     fr_end = 100     # Total number of input images
     fr_interval = 1
@@ -115,7 +115,7 @@ We show an example usage of our dataset uging OmniSDF(CVPR2024) (support only qu
 If you wish to adjust the number of viewpoints, you can easily create a modified version of the dataset by running the following command:
 ```
 python demo_files/generate_sampled_data.py \
-    --base_fir /path/to/OmniBlender3D \
+    --base_fir /path/to/OB3D \
     --scene archiviz-flat \
     --output_dir /path/to/modified-dataset
 ```
