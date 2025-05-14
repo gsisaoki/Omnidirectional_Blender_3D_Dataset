@@ -1,7 +1,7 @@
 # OmniBlender3D
 
 ## Overview
-This repository provides some codes for [OmniBlender3D(OB3D)](https://www.kaggle.com/datasets/shintacs/ob3d-dataset), a dataset designed for 3D reconstruction from multi-view equirectangular images.
+This repository provides some codes for [Omnidirectional Blender 3D Dataset (OB3D)](https://www.kaggle.com/datasets/shintacs/ob3d-dataset), a dataset designed for 3D reconstruction from multi-view equirectangular images.
 In addition to 3D reconstruction, OB3D also supports novel view synthesis and camera pose estimation for equirectangular images.
 This dataset consists of 12 scenes, each of which contains RGB images, depth maps, normal maps, camera parameters, and sparse 3D point clouds.
 
@@ -10,7 +10,7 @@ This dataset consists of 12 scenes, each of which contains RGB images, depth map
 The dataset is organized as follows:
 
 ```
-OmniBlender3D
+OB3D
 |-- archivis-flat
 |   |-- Non-Egocentric
 |       |--cameras
@@ -28,7 +28,7 @@ OmniBlender3D
 |   |-- Egocentric
 |       |-...
 ```
-OB3D can be downloaded from [OmniBlender3D(OB3D)](https://www.kaggle.com/datasets/shintacs/ob3d-dataset) where more detailed information about the OB3D is also provided.
+OB3D can be downloaded from [OB3D](https://www.kaggle.com/datasets/shintacs/ob3d-dataset) where more detailed information about the OB3D is also provided.
 
 ## How to evaluate a reconstructed mesh
 To evaluate a reconstructed mesh using OB3D, it is required to reconstruct the mesh in the same coordinate system and scale as the ground truth, using the provided ground-truth camera parameters.
