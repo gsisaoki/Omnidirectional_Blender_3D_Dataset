@@ -1,8 +1,9 @@
 import numpy as np
 import Imath
 import OpenEXR
+import json
 
-def read_exr_depth(file_path, scale=100):
+def read_exr_depth(file_path, scale=1):
     exr_file = OpenEXR.InputFile(file_path)
     header = exr_file.header()
     dw = header['dataWindow']
@@ -12,7 +13,7 @@ def read_exr_depth(file_path, scale=100):
         
     if pixel_type == Imath.PixelType(Imath.PixelType.FLOAT):
         # FLOAT を使う場合
-        print("The EXR file is stored in FLOAT format.")
+        # print("The EXR file is stored in FLOAT format.")
         FLOAT = Imath.PixelType(Imath.PixelType.FLOAT) # archiviz-flat を使った実行用
         try:
             depth_str = exr_file.channel('V', FLOAT)
@@ -31,7 +32,7 @@ def read_exr_depth(file_path, scale=100):
     elif pixel_type == Imath.PixelType(Imath.PixelType.HALF):
         # HALF を使う場合
         # Read the depth channel as 16-bit floats
-        print("The EXR file is stored in HALF format.")
+        # print("The EXR file is stored in HALF format.")
         HALF = Imath.PixelType(Imath.PixelType.HALF)
         depth_str = exr_file.channel('B', HALF)
         # Convert the binary string to a numpy array
@@ -65,12 +66,16 @@ def calculate_rmse(est_depth, gt_depth, valid_mask, num_valid_pixels):
     rmse = np.sqrt(calculate_mse(est_depth, gt_depth, valid_mask, num_valid_pixels))
     return rmse
 
+# TODO: avoid Nan
 def calculate_rmse_log(est_depth, gt_depth, valid_mask, num_valid_pixels):
-    rmse_log = np.sqrt(np.sum(np.square(np.log(gt_depth[valid_mask]) - np.log(est_depth[valid_mask]))) / num_valid_pixels)
+    # rmse_log = np.sqrt(np.sum(np.square(np.log(gt_depth[valid_mask]) - np.log(est_depth[valid_mask]))) / num_valid_pixels)
+    rmse_log = np.sqrt(np.sum(np.square(np.log(gt_depth[valid_mask] + 1e-6) - np.log(est_depth[valid_mask] + 1e-6))) / num_valid_pixels)
     return rmse_log
 
+# TODO: avoid Nan
 def calculate_rmse_scale_invariant(est_depth, gt_depth, valid_mask, num_valid_pixels):
-    log_diff = np.log(est_depth[valid_mask]) - np.log(gt_depth[valid_mask])
+    # log_diff = np.log(est_depth[valid_mask]) - np.log(gt_depth[valid_mask])
+    log_diff = np.log(gt_depth[valid_mask] + 1e-6) - np.log(est_depth[valid_mask] + 1e-6)
     rmse_scale_invariant  = np.sqrt(np.sum(np.square(log_diff)) / num_valid_pixels - np.square(np.sum(log_diff)) / np.square(num_valid_pixels))
     return rmse_scale_invariant
 
@@ -82,8 +87,10 @@ def calculate_squared_relative_difference(est_depth, gt_depth, valid_mask, num_v
     squared_relative_difference = np.sum(np.square(gt_depth[valid_mask] - est_depth[valid_mask]) / gt_depth[valid_mask]) / num_valid_pixels
     return squared_relative_difference
 
+# TODO: avoid divide by zero
 def calculate_percentage_within_threshold(est_depth, gt_depth, valid_mask, num_valid_pixels, ratio_threshold=1.25):
-    ratio = np.maximum(est_depth[valid_mask] / gt_depth[valid_mask], gt_depth[valid_mask] / est_depth[valid_mask])
+    # ratio = np.maximum(est_depth[valid_mask] / gt_depth[valid_mask], gt_depth[valid_mask] / est_depth[valid_mask])
+    ratio = np.maximum(est_depth[valid_mask] / (gt_depth[valid_mask] + 1e-6), gt_depth[valid_mask] / (est_depth[valid_mask] + 1e-6))
     percentage_within_threshold = np.sum(ratio < ratio_threshold) / num_valid_pixels
     return percentage_within_threshold
 
