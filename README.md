@@ -1,4 +1,4 @@
-# OmniBlender3D
+# Omnidirectional Blender 3D Dataset
 
 ## Overview
 This repository provides some codes for [Omnidirectional Blender 3D Dataset (OB3D)](https://www.kaggle.com/datasets/shintacs/ob3d-dataset), a dataset designed for 3D reconstruction from multi-view equirectangular images.
