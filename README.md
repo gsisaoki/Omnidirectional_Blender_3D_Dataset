@@ -37,7 +37,7 @@ The data of OB3D is available at [OB3D](https://www.kaggle.com/datasets/shintacs
 ## How to evaluate a mesh model reconstructed by your method
 
 Our evaluation code assumes that the reconstructed mesh model has the same coordinate system and scale as the ground truth.
-If you evauate the qulaity of recostructed mesh model by our code, you have to use the provied ground-truth camera parameters to reconstruct a mesh model from the equirectangulr images in OB3D by your method.
+If you evaluate the qulaity of recostructed mesh model by our code, you have to use the provied ground-truth camera parameters to reconstruct a mesh model from the equirectangulr images in OB3D by your method.
 
 A minimal example of how to run the evaluation code is shown below, and a practical example can be found in `eval_demo.ipynb`.
 
