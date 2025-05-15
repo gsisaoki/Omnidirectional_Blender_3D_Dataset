@@ -71,6 +71,7 @@ Since NeuS is typically designed for perspective images, we provide a modified v
     ```
 2. Preparetion
     - To train NeuS, it is necessary to preprocess the dataset according to the instructions provided in the [Training NeuS Using Your Custom Data](https://github.com/Totoro97/NeuS/tree/main/preprocess_custom_data)
+    - For a demonstration of mesh evaluation, we provide preprocessed data at <a href=https://github.com/ShntrIto/SDF360/tree/main/confs>SDF360</a>.
 3. Make a config file
     <details> 
     <summary>./confs/womask_erp.conf</summary>
