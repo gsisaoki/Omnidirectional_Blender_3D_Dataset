@@ -58,10 +58,60 @@ print(depth_metrics)
 - camera_path: Path to the ground-truth camera parameter (e.g., 00000_cam.json)
 - gt_depth_path: Path to ground truth depth map (e.g., 00000_depth.exr)
 
-## Example of 3D Reconstruction (only support qualitative evaluation)
+## Example of 3D Reconsturuction with NeuS (supplort quantitative and qualitative evaluation)
 <details>
 <summary>Details</summary>
-We provide an example usage of our dataset uging OmniSDF (CVPR2024) (support only qualitatitive evaluation)
+We provide We provide an example usage of our dataset uging NeuS (NeurIPS 2021)
+
+1. Download codes
+    ```
+    git clone <url to Our NeuS>
+    cd <Our NeuS>
+    ```
+2. Preparetion
+    - To train NeuS, it is necessary to preprocess the dataset according to the instructions provided in the [Training NeuS Using Your Custom Data](https://github.com/Totoro97/NeuS/tree/main/preprocess_custom_data)
+3. Make a config file
+    <details> 
+    <summary>./confs/demo.conf</summary>
+    ```
+    general {
+        base_exp_dir = ./exp/barbershop
+        recording = [
+            ./,
+            ./models
+        ]
+    }
+
+    dataset {
+        data_dir = /path/to/preprocessed
+        render_cameras_name = cameras_sphere.npz
+        object_cameras_name = cameras_sphere.npz
+        is_erp_image = True
+        is_masked = True
+    }
+    train {
+        learning_rate = 5e-4
+        learning_rate_alpha = 0.05
+        end_iter = 200000
+    ...
+    }
+    ...(following setting is the same as NeuS)
+    ```
+4. Train
+    ```
+    python main.py --mode train --conf ./confs/demo.conf
+    ```
+5. Extract a mesh model
+    ```
+    python main.py --mode validate_mesh --conf ./confs/demo.conf --is_continue
+    ```
+6. Evaluate a mesh model following the above description
+</details>
+
+## Example of 3D Reconstruction with OmniSDF(only support qualitative evaluation)
+<details>
+<summary>Details</summary>
+We provide an example usage of our dataset uging OmniSDF (CVPR2024)
 
 1. Download codes
     ```
