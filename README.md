@@ -74,6 +74,7 @@ Since NeuS is typically designed for perspective images, we provide a modified v
 3. Make a config file
     <details> 
     <summary>./confs/womask_erp.conf</summary>
+
     ```
     general {
         base_exp_dir = ./exp/CASE_NAME
@@ -98,6 +99,7 @@ Since NeuS is typically designed for perspective images, we provide a modified v
     }
     ...(following setting is the same as NeuS)
     ```
+    </details>
 4. Train
     ```
     python main.py --mode train --conf ./confs/demo.conf
