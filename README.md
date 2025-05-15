@@ -179,7 +179,7 @@ python demo_files/generate_sampled_data.py \
     --output_dir /path/to/modified-dataset
 ```
 ### 2. Evaluate a mesh model reconstructed by SDF-based methods
-As menthond above, it is essential to reconstruct the mesh model in the same coordinate system and scale as the ground truth. 
+As mentiond above, it is essential to reconstruct the mesh model in the same coordinate system and scale as the ground truth. 
 In some methods such as SDF-based methods, it may be necessary to transform the scene into a normalized space, such as fitting it into a unit sphere, which alters the scale and coordinate system. 
 We recommend saving the transformation parameters so that the mesh model can be converted back to the original coordinate system and scale for evaluation.
 
