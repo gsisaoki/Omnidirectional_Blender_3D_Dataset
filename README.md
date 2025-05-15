@@ -62,7 +62,7 @@ print(depth_metrics)
 <details>
 <summary>Details</summary>
 We provide an example usage of our dataset uging NeuS (NeurIPS 2021).
-Since NeuS is typically designed for perspective images, we provide a modified version of NeuS, called [SDF360](), which enables rendering of ERP images by modifying the ray generation method. 
+Since NeuS is typically designed for perspective images, we provide a modified version of NeuS, called [SDF360](https://github.com/ShntrIto/SDF360/tree/main), which enables rendering of ERP images by modifying the ray generation method. 
 
 1. Download codes
     ```
@@ -183,6 +183,6 @@ In some methods such as SDF-based methods, it may be necessary to transform the 
 We recommend saving the transformation parameters so that the mesh model can be converted back to the original coordinate system and scale for evaluation.
 
 ## Acknowledgement
-### 3D Reconstruction Methods
-
-### Belnder Projects
+The code of SDF360 is built upon [NeuS](https://github.com/Totoro97/NeuS).
+In our demonstration of OB3D, we used SDF360 and [OmniSDF](https://github.com/KAIST-VCLAB/OmniSDF).
+Thank you for all of these great projects.
