@@ -61,12 +61,13 @@ print(depth_metrics)
 ## Example of 3D Reconsturuction with NeuS (supplort quantitative and qualitative evaluation)
 <details>
 <summary>Details</summary>
-We provide We provide an example usage of our dataset uging NeuS (NeurIPS 2021)
+We provide an example usage of our dataset uging NeuS (NeurIPS 2021).
+Since NeuS is typically designed for perspective images, we provide a modified version of NeuS, called SDF360, which enables rendering of ERP images by modifying the ray generation method. 
 
 1. Download codes
     ```
-    git clone <url to Our NeuS>
-    cd <Our NeuS>
+    git clone -b fix-erp-problem https://github.com/ShntrIto/SDF360.git
+    cd SDF360
     ```
 2. Preparetion
     - To train NeuS, it is necessary to preprocess the dataset according to the instructions provided in the [Training NeuS Using Your Custom Data](https://github.com/Totoro97/NeuS/tree/main/preprocess_custom_data)
@@ -178,3 +179,8 @@ python demo_files/generate_sampled_data.py \
 As menthond above, it is essential to reconstruct the mesh model in the same coordinate system and scale as the ground truth. 
 In some methods such as SDF-based methods, it may be necessary to transform the scene into a normalized space, such as fitting it into a unit sphere, which alters the scale and coordinate system. 
 We recommend saving the transformation parameters so that the mesh model can be converted back to the original coordinate system and scale for evaluation.
+
+## Acknowledgement
+### 3D Reconstruction Methods
+
+### Belnder Projects
