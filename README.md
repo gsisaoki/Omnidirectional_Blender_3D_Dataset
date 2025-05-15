@@ -58,25 +58,25 @@ print(depth_metrics)
 - camera_path: Path to the ground-truth camera parameter (e.g., 00000_cam.json)
 - gt_depth_path: Path to ground truth depth map (e.g., 00000_depth.exr)
 
-## Example of 3D Reconsturuction with NeuS (supplort quantitative and qualitative evaluation)
+## Example of 3D Reconsturuction with NeuS (support quantitative and qualitative evaluation)
 <details>
 <summary>Details</summary>
 We provide an example usage of our dataset uging NeuS (NeurIPS 2021).
-Since NeuS is typically designed for perspective images, we provide a modified version of NeuS, called SDF360, which enables rendering of ERP images by modifying the ray generation method. 
+Since NeuS is typically designed for perspective images, we provide a modified version of NeuS, called [SDF360](), which enables rendering of ERP images by modifying the ray generation method. 
 
 1. Download codes
     ```
-    git clone -b fix-erp-problem https://github.com/ShntrIto/SDF360.git
+    git clone https://github.com/ShntrIto/SDF360.git
     cd SDF360
     ```
 2. Preparetion
     - To train NeuS, it is necessary to preprocess the dataset according to the instructions provided in the [Training NeuS Using Your Custom Data](https://github.com/Totoro97/NeuS/tree/main/preprocess_custom_data)
 3. Make a config file
     <details> 
-    <summary>./confs/demo.conf</summary>
+    <summary>./confs/womask_erp.conf</summary>
     ```
     general {
-        base_exp_dir = ./exp/barbershop
+        base_exp_dir = ./exp/CASE_NAME
         recording = [
             ./,
             ./models
@@ -84,7 +84,7 @@ Since NeuS is typically designed for perspective images, we provide a modified v
     }
 
     dataset {
-        data_dir = /path/to/preprocessed
+        data_dir = ./dataset/CASE_NAME
         render_cameras_name = cameras_sphere.npz
         object_cameras_name = cameras_sphere.npz
         is_erp_image = True
