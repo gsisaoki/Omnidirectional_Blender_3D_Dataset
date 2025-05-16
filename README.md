@@ -197,7 +197,7 @@ print("---------------------------------")
 
 ## Evaluate estimated camera poses
 
-### 1. Estimate camera poses and save them in the following format of OpenSfM or OpenMVG
+### 1. Estimate camera poses and save them in the format of [OpenSfM](https://opensfm.org/) or [OpenMVG](https://github.com/openMVG/openMVG)
 
 ### 2. Run the command belos
 
