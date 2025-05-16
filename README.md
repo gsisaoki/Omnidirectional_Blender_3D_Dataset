@@ -212,4 +212,5 @@ print("---------------------------------")
 ## Acknowledgement
 In our demonstration of OB3D, we used [OmniSDF](https://github.com/KAIST-VCLAB/OmniSDF) and [SDF360](https://github.com/ShntrIto/SDF360/tree/main) (NeuS modified for ERP images).
 The code of SDF360 is built upon [NeuS](https://github.com/Totoro97/NeuS).
+We refered to the implementation of [3DGS](https://github.com/graphdeco-inria/gaussian-splatting/tree/main) and [pytorch-ssim](https://github.com/Po-Hsun-Su/pytorch-ssim%5C) for creating the evaluation code for novel view synthesis.
 Thank you for all of these great projects.
