@@ -169,20 +169,6 @@ We provide an example usage of our dataset uging OmniSDF (CVPR2024)
     ```
 </details>
 
-## Additional Information
-### 1. Change the number of input views
-If you would like to chenge the number of input views, you can easily create a modified version of the dataset by running the following command:
-```
-python demo_files/generate_sampled_data.py \
-    --base_fir /path/to/OB3D \
-    --scene archiviz-flat \
-    --output_dir /path/to/modified-dataset
-```
-### 2. Evaluate a mesh model reconstructed by SDF-based methods
-As mentiond above, it is essential to reconstruct the mesh model in the same coordinate system and scale as the ground truth. 
-In some methods such as SDF-based methods, it may be necessary to transform the scene into a normalized space, such as fitting it into a unit sphere, which alters the scale and coordinate system. 
-We recommend saving the transformation parameters so that the mesh model can be converted back to the original coordinate system and scale for evaluation.
-
 ## Evaluate a RGB image rendered by Novel View Synthesis (NVS) method
 
 ### 1. Set the path to rendered and GT images
@@ -228,6 +214,20 @@ camera_metrics_openmvg = evaluate_camera(gt_camera_path, openmvg_camera_path, pr
 opensfm_camera_path = "/path/to/estimated/camera/opensfm"       
 camera_metrics_opensfm = evaluate_camera(gt_camera_path, opensfm_camera_path, pred_cameras_type="opensfm")
 ```
+
+## Additional Information
+### 1. Change the number of input views
+If you would like to chenge the number of input views, you can easily create a modified version of the dataset by running the following command:
+```
+python demo_files/generate_sampled_data.py \
+    --base_fir /path/to/OB3D \
+    --scene archiviz-flat \
+    --output_dir /path/to/modified-dataset
+```
+### 2. Evaluate a mesh model reconstructed by SDF-based methods
+As mentiond above, it is essential to reconstruct the mesh model in the same coordinate system and scale as the ground truth. 
+In some methods such as SDF-based methods, it may be necessary to transform the scene into a normalized space, such as fitting it into a unit sphere, which alters the scale and coordinate system. 
+We recommend saving the transformation parameters so that the mesh model can be converted back to the original coordinate system and scale for evaluation.
 
 ## Acknowledgement
 - In our demonstration of OB3D, we used [OmniSDF](https://github.com/KAIST-VCLAB/OmniSDF) and [SDF360](https://github.com/ShntrIto/SDF360/tree/main) (NeuS modified for ERP images).
