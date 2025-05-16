@@ -177,6 +177,8 @@ We provide an example usage of our dataset uging OmniSDF (CVPR2024)
 - Evaluate rendered image in terms of PSNR[dB], SSIM, LPIPS(A) and LPIPS(V).
 
 ```python
+from utils.eval_nvs import read_image, calculate_metrics
+import torch
 
 device = torch.device("cuda:0")
 torch.cuda.set_device(device)
