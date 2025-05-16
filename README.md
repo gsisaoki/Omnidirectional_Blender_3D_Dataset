@@ -34,7 +34,7 @@ OB3D
 
 The data of OB3D is available at [OB3D](https://www.kaggle.com/datasets/shintacs/ob3d-dataset), where the detailed information is also provided.
 
-## How to evaluate a mesh model reconstructed by your method
+## Evaluate a mesh model reconstructed by your method
 
 Our evaluation code assumes that the reconstructed mesh model has the same coordinate system and scale as the ground truth.
 If you evaluate the qulaity of recostructed mesh model by our code, you have to use the provied ground-truth camera parameters to reconstruct a mesh model from the equirectangulr images in OB3D by your method.
@@ -182,6 +182,32 @@ python demo_files/generate_sampled_data.py \
 As mentiond above, it is essential to reconstruct the mesh model in the same coordinate system and scale as the ground truth. 
 In some methods such as SDF-based methods, it may be necessary to transform the scene into a normalized space, such as fitting it into a unit sphere, which alters the scale and coordinate system. 
 We recommend saving the transformation parameters so that the mesh model can be converted back to the original coordinate system and scale for evaluation.
+
+## Evaluate a RGB image rendered by Novel View Synthesis (NVS) method
+
+### 1. Set the path to rendered and GT images
+
+### 2. Run the command below
+- Evaluate rendered image in terms of PSNR[dB], SSIM, LPIPS(A) and LPIPS(V).
+
+```python
+
+device = torch.device("cuda:0")
+torch.cuda.set_device(device)
+
+gt_path = "/path/to/your/ground/truth/image"
+render_path = "/path/to/your/rendered/image"
+render, gt = read_image(render_path, gt_path)
+metrics = calculate_metrics(render, gt)
+
+print("---------------------------------")
+print("  PSNR        : {:>12.7f}".format(metrics['PSNR'], ".5"))
+print("  SSIM        : {:>12.7f}".format(metrics['SSIM'], ".5"))
+print("  LPIPS(alex) : {:>12.7f}".format(metrics['LPIPS(alex)'], ".5"))
+print("  LPIPS(vgg)  : {:>12.7f}".format(metrics['LPIPS(vgg)'], ".5"))
+print("---------------------------------")
+
+```
 
 ## Acknowledgement
 In our demonstration of OB3D, we used [OmniSDF](https://github.com/KAIST-VCLAB/OmniSDF) and [SDF360](https://github.com/ShntrIto/SDF360/tree/main) (NeuS modified for ERP images).
