@@ -209,8 +209,30 @@ print("---------------------------------")
 
 ```
 
+## Evaluate estimated camera poses
+
+### 1. Estimate camera poses and save them in the following format of OpenSfM or OpenMVG
+
+### 2. Run the command belos
+
+```python
+from utils.eval_camera import *
+ 
+gt_camera_path = "/path/to/OB3D/scene/Egocentric/cameras"
+ 
+# This dirctory assume '/path/to/estimated/camera/openmvg/reconstruction/sdf_data.json'
+openmvg_camera_path = "/path/to/estimated/camera/openmvg"       
+camera_metrics_openmvg = evaluate_camera(gt_camera_path, openmvg_camera_path, pred_cameras_type="openmvg")
+ 
+# This dirctory assume '/path/to/estimated/camera/opensfm/reconstruction.json'
+opensfm_camera_path = "/path/to/estimated/camera/opensfm"       
+camera_metrics_opensfm = evaluate_camera(gt_camera_path, opensfm_camera_path, pred_cameras_type="opensfm")
+```
+
 ## Acknowledgement
-In our demonstration of OB3D, we used [OmniSDF](https://github.com/KAIST-VCLAB/OmniSDF) and [SDF360](https://github.com/ShntrIto/SDF360/tree/main) (NeuS modified for ERP images).
+- In our demonstration of OB3D, we used [OmniSDF](https://github.com/KAIST-VCLAB/OmniSDF) and [SDF360](https://github.com/ShntrIto/SDF360/tree/main) (NeuS modified for ERP images).
 The code of SDF360 is built upon [NeuS](https://github.com/Totoro97/NeuS).
-We refered to the implementation of [3DGS](https://github.com/graphdeco-inria/gaussian-splatting/tree/main) and [pytorch-ssim](https://github.com/Po-Hsun-Su/pytorch-ssim%5C) for creating the evaluation code for novel view synthesis.
+- We refered to the implementation of [3DGS](https://github.com/graphdeco-inria/gaussian-splatting/tree/main) and [pytorch-ssim](https://github.com/Po-Hsun-Su/pytorch-ssim%5C) for creating the evaluation code for novel view synthesis.
 Thank you for all of these great projects.
+- For camera parameter estimation, we used two methods, [OpenSfM](https://opensfm.org/) and [OpenMVG](https://github.com/openMVG/openMVG).
+- Thank you for all of these great projects.
