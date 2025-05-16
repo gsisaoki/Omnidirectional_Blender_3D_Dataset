@@ -103,14 +103,20 @@ def calculate_percentage_within_threshold(est_depth, gt_depth, valid_mask, num_v
     percentage_within_threshold = np.sum(ratio < ratio_threshold) / num_valid_pixels
     return percentage_within_threshold
 
-def calculate_metrics(est_depth, gt_depth, depth_max_value=None):
-    if depth_max_value is not None:
-        est_depth[est_depth > depth_max_value] = np.nan
-        gt_depth[gt_depth > depth_max_value] = np.nan
-    est_depth[est_depth == 0] = np.nan
-    gt_depth[gt_depth == 0] = np.nan
-    
-    valid_mask = ~np.isnan(est_depth) & ~np.isnan(gt_depth)
+def calculate_metrics(est_depth, gt_depth, depth_min_value=0.0, depth_max_value=100.0):
+    # if depth_max_value is not None:
+    #     est_depth[est_depth > depth_max_value] = np.nan
+    #     gt_depth[gt_depth > depth_max_value] = np.nan
+    # est_depth[est_depth == 0] = np.nan
+    # gt_depth[gt_depth == 0] = np.nan
+    # valid_mask = ~np.isnan(est_depth) & ~np.isnan(gt_depth)
+
+    est_depth[est_depth < depth_min_value] = depth_min_value
+    est_depth[est_depth > depth_max_value] = depth_max_value
+    est_depth[np.isinf(est_depth)] = depth_max_value
+    est_depth[np.isnan(est_depth)] = depth_min_value
+    valid_mask = (gt_depth > depth_min_value) & (gt_depth < depth_max_value)
+
     num_valid_pixels = np.sum(valid_mask)
 
     if num_valid_pixels == 0:
