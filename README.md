@@ -199,7 +199,7 @@ print("---------------------------------")
 
 ### 1. Estimate camera poses and save them in the format of [OpenSfM](https://opensfm.org/) or [OpenMVG](https://github.com/openMVG/openMVG)
 
-### 2. Run the command belos
+### 2. Run the command below
 
 ```python
 from utils.eval_camera import *
