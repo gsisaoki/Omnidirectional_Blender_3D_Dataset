@@ -208,7 +208,7 @@ from utils.eval_camera import *
  
 gt_camera_path = "/path/to/OB3D/scene/Egocentric/cameras"
  
-# This dirctory assume '/path/to/estimated/camera/openmvg/reconstruction/sdf_data.json'
+# This dirctory assume '/path/to/estimated/camera/openmvg/reconstruction/sfm_data.json'
 openmvg_camera_path = "/path/to/estimated/camera/openmvg"       
 camera_metrics_openmvg = evaluate_camera(gt_camera_path, openmvg_camera_path, pred_cameras_type="openmvg")
  
