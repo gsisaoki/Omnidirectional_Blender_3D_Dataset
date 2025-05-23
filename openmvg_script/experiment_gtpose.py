@@ -29,9 +29,6 @@ def remove_points_from_ply(input_ply_path, output_ply_path, remove_first_n=100, 
         f.writelines(lines[:end_header_idx + 1])
         f.writelines(filtered_points)
 
-    # print(f"Saved filtered PLY to: {output_ply_path} (Removed {remove_first_n} head + {remove_last_n} tail)")
-
-
 database_path = "/your/path/to/dataset"
 
 scene_names = os.listdir(database_path)

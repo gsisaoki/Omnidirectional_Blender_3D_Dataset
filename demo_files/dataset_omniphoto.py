@@ -4,9 +4,6 @@ import cv2 as cv
 import numpy as np
 import os, sys
 from glob import glob
-# from icecream import ic
-# from scipy.spatial.transform import Rotation as Rot
-# from scipy.spatial.transform import Slerp
 import csv, math
 from models.dataloader.dataset_utils import *
 
@@ -66,7 +63,6 @@ class Egocentric360:
                         )
                     )
     
-        ## Blender360 データセットの画像の読み込み部分
         elif self.dataset_name == "Blender360":
             # import pdb; pdb.set_trace()
             image_paths = sorted(glob(os.path.join(self.data_dir, "images", "*_rgb.png")))
@@ -112,7 +108,6 @@ class Egocentric360:
         ### depths
         os.environ["OPENCV_IO_ENABLE_OPENEXR"]="1"
 
-        # デプスの読み込み部分
         if self.dataset_name == "ODB":
             self.odb_scale = conf.get_float('dataset_scale')
             self.depths_lis = [os.path.join(self.data_dir, "depth", f"{frame_id:03d}_depth.exr") for frame_id in range(self.fr_start, self.fr_end, 1)]
@@ -121,15 +116,11 @@ class Egocentric360:
             if self.data_dir == "/home/jaxa/shintaro/OmniGauSS/data/OmniDepthBlender/archiviz-flat":
                 cm2m_scale = 1
             
-            self.depths_np = np.stack([self.read_exr_depth(im_name, cm2m_scale) for im_name in self.depths_lis]) # デプスの読み込み
+            self.depths_np = np.stack([self.read_exr_depth(im_name, cm2m_scale) for im_name in self.depths_lis])
             self.depths = torch.from_numpy(self.depths_np.astype(np.float32)).cuda()
             
-            # TODO: デプスマップの無効な部分をマスクする
-            # TODO: OpenSfM の世界座標系と真値のカメラパラメータの世界座標系との間のスケールを事前に計算し，
-            #       それを基に far の値を決めることで octree の作成に用いるデプスマップのマスクを決定する
-            # barbershop: scale = 0.12889872026806104
-            invalid_depth_msk = torch.logical_or((self.depths > 1e2), ~self.mask) # とりあえず適当に 100
-            depths = self.depths / self.odb_scale # ODB データセットのスケールで割る
+            invalid_depth_msk = torch.logical_or((self.depths > 1e2), ~self.mask)
+            depths = self.depths / self.odb_scale
             depths[invalid_depth_msk] = 0.0
             print("depth min, max", torch.min(depths), torch.max(depths))
         
@@ -137,23 +128,18 @@ class Egocentric360:
             self.mp3d_scale = conf.get_float('dataset_scale')
             self.depths_lis = glob(os.path.join(self.data_dir, "depth", "*.dpt"))
             
-            self.depths_np = np.stack([self.read_dpt(im_name) for im_name in self.depths_lis]) # デプスの読み込み
+            self.depths_np = np.stack([self.read_dpt(im_name) for im_name in self.depths_lis])
             self.depths = torch.from_numpy(self.depths_np.astype(np.float32)).cuda()
             invalid_depth_msk = torch.logical_or((self.depths == 0), ~self.mask)
-            depths = self.depths / self.mp3d_scale # mp3d データセットのスケールで割る
+            depths = self.depths / self.mp3d_scale 
             depths[invalid_depth_msk] = 0.0
             print("depth min, max", torch.min(depths), torch.max(depths))
         
         elif self.dataset_name == "Blender360":
-            # TODO: 名前の指定方法を修正する
-            # import pdb; pdb.set_trace()
-            # self.depths_lis = [os.path.join(self.data_dir, "depths", f"{frame_id:05d}_depth{frame_id:04d}.exr") for frame_id in range(self.fr_start, self.fr_end, 1)]
             self.depths_lis = sorted(glob(os.path.join(self.data_dir, "depths", "*.exr*")))
-            # self.depths_np = np.stack([self.read_exr_depth(im_name, scale=1) for im_name in self.depths_lis])
             self.depths_np = np.stack([self.read_exr_depth_v2(im_name, scale=1) for im_name in self.depths_lis])
             self.depths = torch.from_numpy(self.depths_np.astype(np.float32)).cuda()
-            invalid_depth_msk = torch.logical_or((self.depths > 1e2), ~self.mask) # 100 以上のデプスは外れ値として，0 のデプスを与える
-            # NOTE: Blender360 の場合，真値のカメラパラメータを使うため，スケール変換は必要ないはず... 
+            invalid_depth_msk = torch.logical_or((self.depths > 1e2), ~self.mask) 
             depths = self.depths
             depths[invalid_depth_msk] = 0.0
             print("depth min, max", torch.min(depths), torch.max(depths))
@@ -171,30 +157,10 @@ class Egocentric360:
             depths[invalid_depth_msk] = 0.0
             print("depth min, max", torch.max(depths), torch.min(depths))
         
-        # =====
-        # 可視化用
-        # import matplotlib.pyplot as plt
-        # import matplotlib.cm as cm
-        # depths[invalid_depth_msk] = 0.01
-        # depths[depths > 100] = 0.01
-        # depth_image = depths[0].cpu().numpy()
-        # # depth_image_colored = cm.turbo(depth_image / np.max(depth_image))
-        # # depth_image_colored = cm.turbo(depth_image)
-        # plt.imshow(depth_image, cmap="turbo")
-        # plt.title("Depth Image with Turbo Colormap")
-        # plt.colorbar()
-        # plt.savefig("depth_image.png")
-        # import pdb; pdb.set_trace()
-        # =====
-        
-        # depths = torch.nan_to_num(depths, 0)
-
-
         self.depths = depths
         self.depths_mask = ~invalid_depth_msk
 
         ### Cameras
-        # カメラパラメータの読み込み部分
         if self.dataset_name == 'ODB' or self.dataset_name == 'mp3d':
             reconstruction_file = os.path.join(self.data_dir, 'reconstruction.json')
             with open(reconstruction_file) as f:
@@ -211,10 +177,8 @@ class Egocentric360:
                         mat = np.concatenate([rotation, np.array(translation).reshape(3, 1)], axis=1) # [3, 4]
                         mat = np.concatenate([mat, np.array([0, 0, 0, 1]).reshape(1, 4)], axis=0) # [4, 4]
                         mat = np.linalg.inv(mat)
-                        # 画像名とtranslationをタプルでリストに追加
                         camera_poses.append((image_name, mat.astype(np.float32)))
 
-                # 画像名とtranslationのリスト
                 camera_poses = sorted(camera_poses, key=lambda x: x[0])
                 traj = [mat for _, mat in camera_poses]
         
@@ -297,7 +261,6 @@ class Egocentric360:
         
         rays_rot = torch.tensor(np.tile(self.cam_rot[img_idx:img_idx+1, ...], (w*h, 1, 1))).contiguous().cuda()  # [N, 3, 3]
         rays_v = pixel_to_rays_dir(pixels_x, pixels_y, self.H, self.W).reshape(-1, 3).contiguous().cuda()  # [N=H*W, 3]
-        # rays_v = pixel_to_rays_dir(pixels_x, pixels_y, h, w).reshape(-1, 3).contiguous().cuda()  # [N=H*W, 3]
         rays_v = cam2world_rays(rays_v, rays_rot)
         
         rays_o = zaxis_front2top(rays_o)
@@ -308,8 +271,6 @@ class Egocentric360:
         rays_v = torch.nn.functional.normalize(rays_v, dim=-1)
         
         return rays_o, rays_v
-        # depth = self.depths[img_idx]    
-        # return rays_o, rays_v, depth
     
     def gen_discrete_rays_at(self, img_idx, resolution_level=1):
         # l = resolution_level
@@ -319,7 +280,6 @@ class Egocentric360:
         pixels_x = pixels_x.transpose(0, 1)         # [H, W]
         pixels_y = pixels_y.transpose(0, 1)
 
-        #mask = self.depths_mask[img_idx][(pixels_y, pixels_x)]      # [H, W]
         mask = torch.logical_and(
             self.depths_mask[img_idx][(pixels_y, pixels_x)],
             self.mask[(pixels_y, pixels_x)]
@@ -332,8 +292,6 @@ class Egocentric360:
         rays_o = torch.tensor(np.tile(self.cam_pos[img_idx:img_idx+1, ...], (w*h, 1))).cuda()
         
         rays_rot = torch.tensor(np.tile(self.cam_rot[img_idx:img_idx+1, ...], (w*h, 1, 1))).contiguous().cuda()  # [N, 3, 3]
-        # rays_v = pixel_to_rays_dir(pixels_x, pixels_y, h, w).reshape(-1, 3).contiguous().cuda()  # [N=H*W, 3]
-        # rays_v = pixel_to_rays_dir(pixels_x, pixels_y, self.H, self.W).reshape(-1, 3).contiguous().cuda()  # [N=H*W, 3]
         rays_v = pixel_to_rays_dir(pixels_x, pixels_y, self.H, self.W).reshape(-1, 3).contiguous().cuda()  # [N=H*W, 3]
         rays_v = cam2world_rays(rays_v, rays_rot)
         
@@ -375,11 +333,7 @@ class Egocentric360:
 
     def image_at(self, idx, resolution_level):
         return (cv.resize(self.images_np[idx]*256, (self.W // resolution_level, self.H // resolution_level))).clip(0, 255)
-        # return (self.images_np[idx] * 256.0).clip(0, 255)
-        
-    #
-    # Matterport3D データセット実験用
-    #
+
     def read_dpt(self, dpt_file_path):
         """read depth map from *.dpt file.
 
@@ -417,9 +371,6 @@ class Egocentric360:
 
         return depth_data
 
-    #
-    # ODB データセット実験用
-    # --- addded by takama 2025/05/09 ---
     def read_exr_depth_v2(self, file_path, scale=1):
         exr_file = OpenEXR.InputFile(file_path)
         dw = exr_file.header()['dataWindow']
@@ -431,7 +382,6 @@ class Egocentric360:
         depth = np.frombuffer(depth_str, dtype=np.float32)
         depth = np.reshape(depth, (height, width))
         return depth
-    # ------------------------------------
 
     def read_exr_depth(self, file_path, scale=100):
         exr_file = OpenEXR.InputFile(file_path)
@@ -461,7 +411,6 @@ class Egocentric360:
             depth = np.frombuffer(depth_str, dtype=np.float32).reshape(size[1], size[0])
         
         elif pixel_type == Imath.PixelType(Imath.PixelType.HALF):
-            # HALF を使う場合
             # Read the depth channel as 16-bit floats
             print("The EXR file is stored in HALF format.")
             HALF = Imath.PixelType(Imath.PixelType.HALF)
@@ -489,8 +438,8 @@ class Egocentric360:
             1 - 2 * qvec[1]**2 - 2 * qvec[2]**2]])
     
     def angle_axis_to_quaternion(self, angle_axis: np.ndarray):
-        angle = np.linalg.norm(angle_axis) # 回転角度を求める
-        x = angle_axis[0] / angle # 回転軸の単位ベクトル
+        angle = np.linalg.norm(angle_axis)
+        x = angle_axis[0] / angle
         y = angle_axis[1] / angle
         z = angle_axis[2] / angle
 

@@ -10,7 +10,7 @@ def read_exr_depth(file_path, scale=1):
     size = (dw.max.x - dw.min.x + 1, dw.max.y - dw.min.y + 1)
     
     try:
-        pixel_type = header['channels']['B'].type # 型判別用の変数
+        pixel_type = header['channels']['B'].type 
     except:
         try:
             pixel_type = header['channels']['V'].type
@@ -18,9 +18,8 @@ def read_exr_depth(file_path, scale=1):
             print("The EXR file does not contain a valid depth channel.")
         
     if pixel_type == Imath.PixelType(Imath.PixelType.FLOAT):
-        # FLOAT を使う場合
         # print("The EXR file is stored in FLOAT format.")
-        FLOAT = Imath.PixelType(Imath.PixelType.FLOAT) # archiviz-flat を使った実行用
+        FLOAT = Imath.PixelType(Imath.PixelType.FLOAT)
         try:
             depth_str = exr_file.channel('V', FLOAT)
         except:
@@ -36,7 +35,6 @@ def read_exr_depth(file_path, scale=1):
                         raise ValueError("No valid depth channel found in the EXR file.")
         depth = np.frombuffer(depth_str, dtype=np.float32).reshape(size[1], size[0])
     elif pixel_type == Imath.PixelType(Imath.PixelType.HALF):
-        # HALF を使う場合
         # Read the depth channel as 16-bit floats
         # print("The EXR file is stored in HALF format.")
         HALF = Imath.PixelType(Imath.PixelType.HALF)
@@ -75,13 +73,11 @@ def calculate_rmse(est_depth, gt_depth, valid_mask, num_valid_pixels):
     rmse = np.sqrt(calculate_mse(est_depth, gt_depth, valid_mask, num_valid_pixels))
     return rmse
 
-# TODO: avoid Nan
 def calculate_rmse_log(est_depth, gt_depth, valid_mask, num_valid_pixels):
     # rmse_log = np.sqrt(np.sum(np.square(np.log(gt_depth[valid_mask]) - np.log(est_depth[valid_mask]))) / num_valid_pixels)
     rmse_log = np.sqrt(np.sum(np.square(np.log(gt_depth[valid_mask] + 1e-6) - np.log(est_depth[valid_mask] + 1e-6))) / num_valid_pixels)
     return rmse_log
 
-# TODO: avoid Nan
 def calculate_rmse_scale_invariant(est_depth, gt_depth, valid_mask, num_valid_pixels):
     # log_diff = np.log(est_depth[valid_mask]) - np.log(gt_depth[valid_mask])
     log_diff = np.log(gt_depth[valid_mask] + 1e-6) - np.log(est_depth[valid_mask] + 1e-6)

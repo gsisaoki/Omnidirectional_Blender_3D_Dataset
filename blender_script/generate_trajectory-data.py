@@ -305,9 +305,7 @@ def main(args):
         depth.format.exr_codec = 'ZIP'
         depth.base_path = os.path.join(output_folder, "depths")
         depth.file_slots[0].path = f"{id:05}_depth"
-        # scene.node_tree.links.new(rn.outputs['Denoising Depth'], depth.inputs[0])
         scene.node_tree.links.new(rn.outputs['Depth'], depth.inputs[0])
-        # scene.node_tree.links.new(rn.outputs[1], depth.inputs[0])
 
         ### Set Normal Info
         normal = scene.node_tree.nodes.new('CompositorNodeOutputFile')
@@ -317,8 +315,6 @@ def main(args):
         normal.base_path = os.path.join(output_folder, "normals")
         normal.file_slots[0].path = f"{id:05}_normal"
         scene.node_tree.links.new(rn.outputs['Normal'], normal.inputs[0])
-        # scene.node_tree.links.new(rn.outputs[2], normal.inputs[0])
-
         ### Run Rendering
         bpy.context.scene.cycles.samples = args.num_samples
         bpy.ops.render.render(write_still=True) # Render image

@@ -11,7 +11,7 @@ def nn_correspondance(verts1, verts2):
         return indices, distances
 
     kdtree = KDTree(verts1)
-    distances, indices = kdtree.query(verts2)   # verts2 の各点に対して verts1 の中で一番近い点を見つける
+    distances, indices = kdtree.query(verts2)
     distances = distances.reshape(-1)
 
     return distances

@@ -24,15 +24,6 @@ with open(sfm_data_path, 'r') as sfm_data:
                     extrinsic_data = json.load(f)[0]['extrinsics']
                     translation = np.array(extrinsic_data['translation'])
                     rotation = np.array(extrinsic_data['rotation'])
-
-                    # P = np.eye(4)
-                    # P[:3, :3] = rotation
-                    # P[:3, 3] = translation
-                    # P_inv = np.linalg.inv(P)
-                    # rotation_c2w = P_inv[:3, :3]
-                    # translation_c2w = P_inv[:3, 3]
-
-                    # center = -rotation_c2w.T @ translation_c2w
                     
                     center = -rotation.T @ translation
                     

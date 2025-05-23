@@ -8,10 +8,10 @@ import argparse
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Generate sampled data for NeurIPS.')
-    parser.add_argument('--base_dir', type=str, default='/home/jaxa/shintaro/datasets/Blender360/')
+    parser.add_argument('--base_dir', type=str, default='/path/to/OB3D/')
     parser.add_argument('--num_interval', type=int, default=4)
     parser.add_argument('--scene', type=str, default='EmeraldSquare')
-    parser.add_argument('--output_dir', type=str, default='/home/jaxa/takama/datasets/Blender360/')
+    parser.add_argument('--output_dir', type=str, default='/path/to/output/')
     args = parser.parse_args()
 
     base_dir = args.base_dir
