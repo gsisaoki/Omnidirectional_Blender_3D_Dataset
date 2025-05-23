@@ -10,7 +10,7 @@ The dataset structure of OB3D is shown below.
 
 ```
 OB3D
-|-- archivis-flat
+|-- archiviz-flat
 |   |-- Egocentric
 |       |--cameras
 |          |--00000_cam.json
